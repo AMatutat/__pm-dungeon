@@ -76,23 +76,343 @@ Betrachten wir nun den `code/core/src/starter/MyGame.java`. Diese Klasse ist Ihr
 
 ## Eigener Held
 
-@amatutat
+Jetzt, wo Sie sichergestellt haben, dass das Dungeon ausgeführt werden kann, geht es darum, das Spiel mit Ihren Inhalten zu erweitern. Im Folgenden wird schrittweise ein rudimentärer Held implementiert, um Ihnen die verschiedenen Aspekte des Dungeon zu erläutern.
+
+Fangen wir damit an, eine neue Klasse für den Helden anzulegen. Unser Held soll grafisch dargestellt werden und vom `EntityController` verwaltet werden können. Daher erbt er von der abtrakten Klasse `basiselements.DungeonElement`.
+
+Diese abstrakte Klasse `basiselements.DungeonElement` liefert einige Methoden, welche wir implementieren müssen.
+
+- `getPosition` gibt an, wo unser Held im Dungeon steht. Weiter unten folgt eine genauere Erklärung des verwendeten Koordinaten- und Positionssystem.
+- `getTexturePath` gibt an, welche Textur verwendet werden soll, wenn unser Held gezeichnet wird.
+
+Für beide Methoden legen wir uns Attribute an, die immer den aktuellen Wert speichern und diesen in den getter-Methoden zurückliefern. 
+
+Zuerst benötigt unser Held eine Textur, die gezeichnet werden soll, um den Helden darzustellen. Im Framework arbeiten wir immer mit den relativen Pfaden (ausgehend vom `asset/` Verzeichnis), um die Texturen zu laden.
+Daher speichern wir einen String mit dem Pfad zu der Textur ab und geben diesen in `getTexturePath()` zurück.
+
+Damit wir unseren Helden im Level platziern können, erstellen wir die Methode `setLevel`, dieser wird das aktuelle Level übergeben und der Held sucht sich dann die Startposition im Level und platziert sich dort.
+
+```java
+package mygame;
+
+import basiselements.DungeonElement;
+import level.elements.ILevel;
+import tools.Point;
+
+public class Hero extends DungeonElement {
+    private String texture = "character/knight/knight_m_idle_anim_f0.png";
+    private Point currentPosition;
+    private ILevel currentLevel;
+
+    public void setLevel(ILevel level) {
+        currentLevel = level;
+        currentPosition = level.getStartTile().getCoordinate().toPoint();
+    }
+
+    @Override
+    public void update() {
+        // do nothing
+    }
+
+    @Override
+    public Point getPosition() {
+        return currentPosition;
+    }
+
+    @Override
+    public String getTexturePath() {
+        return texture;
+    }
+}
+```
+
+Bevor wir weiter machen, sollten wir uns einmal den Aufbau des Level anschauen. Level werden als 2D-Tile-Array gespeichert. Ein `Tile` ist dabei ein Feld im Level, also eine Wand oder ein Bodenfeld. Jedes `Tile` hat eine feste `Coordinate` im Array (also einen Index, wo im Array das `Tile` abgespeichert ist). Diese `Coordinate` gibt auch an, wo das `Tile` im Level liegt. `Coordinate` sind zwei Integerwerte (`x` und `y`). Die Position von Entitäten geben wir als `Point` an. Ein `Point` sind zwei Floatwerte (`x` und `y`). Das machen wir, weil unsere Entitäten auch zwischen zwei `Tiles` stehen können. Wenn wir später die Steuerung für unseren Helden implementieren, wird dieses noch deutlicher. Jetzt ist wichtig, dass wir mit `Coordinate.toPoint()` unseren Helden auf die Position des Starttiles setzen können.
+
+Jetzt müssen wir unseren Helden noch im Spiel hinzufügen. Dafür erstellen wir zuerst eine Instanz unserer Klasse in der `MyGame#setup` Methode. 
+Danach fügen wir unseren Helden dem `EntityController` hinzu, dieser sorgt jetzt dafür, dass unser Held regelmäßig aktualisert und gezeichnet wird. 
+Um unseren Helden eine Position im Level zuzuweisen, gehen wir in die `MyGame#onLevelLoad` Methode und rufen dort die `Hero#setLevel` Methode auf und übergeben das aktuelle Level. 
+Wenn wir schon dabei sind, können wir unsere Kamera auch so verändern, dass sie immer den Helden im Fokus hält. Das wird später noch nützlich.
+
+```java
+package starter;
+
+import controller.Game;
+import mygame.Hero;
+
+/**
+ * The entry class to create your own implementation.
+ *
+ * <p>This class is directly derived form {@link Game} and acts as the {@link
+ * com.badlogic.gdx.Game}.
+ */
+public class MyGame extends Game {
+    private Hero hero;
+
+    @Override
+    protected void setup() {
+        hero = new Hero();
+        entityController.add(hero);
+
+        // set the default generator
+        // levelAPI.setGenerator(new RandomWalkGenerator());
+        // load the first level
+        levelAPI.loadLevel();
+    }
+
+    @Override
+    protected void frame() {}
+
+    @Override
+    public void onLevelLoad() {
+        camera.follow(hero);
+        hero.setLevel(levelAPI.getCurrentLevel());
+    }
+
+    /**
+     * The program entry point to start the dungeon.
+     *
+     * @param args command line arguments, but not needed.
+     */
+    public static void main(String[] args) {
+        // start the game
+        DesktopLauncher.run(new MyGame());
+    }
+}
+```
+
+Möchten Sie, dass Ihr Hero oder eine andere Entität nicht mehr weiter vom `EntityController` verwaltet wird, z.B. wenn sie "stirbt", überschreiben Sie dafür in der jeweiligen Klasse die Methode `removeable`, die von der `Removeable`-Klasse geerbt wurde. Sobald diese Methode den Wert `true` zurückgibt, wird die Instanz im nächsten Frame aus dem `EntityController` entfernt. Wie im Beispiel zu sehen, wird die Entität dann entfernt, wenn die Lebenspunkte auf 0 gefallen sind.
+
+Das folgende Beispiel ist für unseren Helden noch nicht direkt anwendbar (`lebenspunkte` ist noch nicht definiert), aber vielleicht wollen Sie diese Funktionalität irgendwann selbst implementieren.
+
+```java
+    @Override
+    public boolean removable() {
+        return lebenspunkte == 0;
+    }
+```
+
+Wenn Sie das Spiel nun starten, sollten Sie ihren (unbeweglichen) Helden im Dungeon sehen können.
+
+![my_hero](tbd)
 
 ### Intermezzo: Der Assets-Ordner
 
-@amatutat
+Im Ordner [`code/assets/`](https://github.com/PM-Dungeon/dungeon-starter/tree/master/code/assets) werden alle Assets gespeichert, die im Dungeon verwendet werden. Assets sind dabei im Prinzip die Texturen, die später gezeichnet werden sollen.
+Der `assets`-Ordner hat aber eine spezielle Adressierung.
+Wenn der absolute Pfad zu einer Textur zum Beispiel `code/assets/character/knight/knight_m_idle_anim_f0.png` ist, dann geben wir den relativen Pfad zur Textur mit `character/knight/knight_m_idle_anim_f0.png` an.
+Das Präfix `code/assets/` wird dabei also einfach weggelassen.
+
+Bitte finden Sie selbst heraus, welche Texturen es gibt und verwendet werden können.
+
+Der Assets-Ordner kann übrigens auch **umbenannt** oder an eine andere Stelle **verschoben** werden: Passen Sie dafür die Pfadangabe `sourceSets.main.resources.srcDirs = ["assets/"]` in der [`build.gradle`](https://github.com/PM-Dungeon/dungeon-starter/blob/master/code/build.gradle)-Datei an.
+
+**Beispiel:** Sie möchten den Ordner `dungeon-starter/code/assets/` nach `dungeon-starter/code/bar/wuppie/` verschieben, dann ändern Sie `sourceSets.main.resources.srcDirs = ["assets/"]` in `sourceSets.main.resources.srcDirs = ["bar/wuppie/"]`.
+
+Beachten Sie, dass der Ordner nur innerhalb von `dungeon-starter/code/` umbenannt bzw. verschoben werden kann.
+
+Später werden Sie es wahrscheinlich praktischer finden, anstelle von relativen Pfaden den [`textures/TextureHandler.java`](https://github.com/PM-Dungeon/core/blob/master/code/core/src/textures/TextureHandler.java) zu verwenden, der reguläre Ausdrücke entgegennehmen und entsprechende Textur-Pfade zurückgeben kann.
 
 ### Der bewegte (animierte) Held
 
-@amatutat
+Aktuell besitzt unser Held nur eine feste Textur, in diesem Abschnitt animieren wir unseren Helden.
+Im PM-Dungeon ist eine Animation ein Loop verschiedener Texturen, die im Wechsel gezeichnet werden.
+Um unseren Helden zu animieren, nutzen wir eine erweiterte Version von `DungeonElement` mit dem Namen `AnimatableElement`.
+
+Die Methode `getTexturePath` müssen wir nun mit der Methode `getActiveAnimation` ersetzen. Ebenso ersetzen wir unser `texture`-Attribut durch ein Attribut `Animation idle`.
+
+```java
+package mygame;
+
+import basiselements.AnimatableElement;
+import graphic.Animation;
+import java.util.List;
+import textures.TextureHandler;
+import tools.Point;
+
+public class Hero extends AnimatableElement {
+    private Animation idle;
+    private Point currentPosition;
+    private ILevel currentLevel;
+
+    public Hero() {
+        List<String> texturePaths =
+                TextureHandler.getInstance().getTexturePaths("knight_m_idle_anim_f");
+        idle = new Animation(texturePaths, 5);
+    }
+
+    public void setLevel(ILevel level) {
+        currentLevel = level;
+        currentPosition = level.getStartTile().getCoordinate().toPoint();
+    }
+
+    @Override
+    public void update() {
+        // do nothing
+    }
+
+    @Override
+    public Point getPosition() {
+        return currentPosition;
+    }
+
+    @Override
+    public Animation getActiveAnimation() {
+        return idle;
+    }
+}
+```
+
+Um eine Animation zu erstellen benötigen Sie eine Liste mit verschiedenen Texturen. Dann können Sie mit `new Animation()` eine Animation erstellen. Dabei übergeben Sie die Liste mit den Texturen und einen Integerwert, der angibt, nach wie vielen Frames die nächste Textur geladen werden soll (hier im Beispiel der Wert 5). In unserem Beispiel wird also 5 Frames lang die Textur `knight_m_idle_anim_f0` angezeigt, dann 5 Frames die Textur `knight_m_idle_anim_f1` und dann wieder 5 Frames die Textur `knight_m_idle_anim_f0` usw.
+
+Um uns das einlesen der verschiedenen Texturen einfacher zu machen, haben wir hier den `TextureHandler` verwendet. Dieser läd uns alle Datein ein, die `"knight_m_idle_anim_f"` im Namen haben, so müssen wir nicht alle Texturen manuell festlegen.  
+
+Sie können (und sollten) auch verschiedene Animationen für verschiedene Situationen ertellen (Stehen, Laufen, ...). Geben Sie einfach in `getActiveAnimation` immer die Animation zurück, die gerade verwendet werden soll.
+
+Wenn Sie das Spiel nun starten, sollten Sie Ihren animierten (aber immer noch unbeweglichen) Helden sehen.
+
+![controll]()
 
 ### WASD oder die Steuerung des Helden über die Tastatur
 
-@amatutat
+Es wird Zeit, dass unser Held sich bewegen kann. Dafür überschreiben wir die `DungeonElement#update`-Methode in `Hero` und fügen die Steuerungsoptionen hinzu.
+
+```java
+package mygame;
+
+import basiselements.AnimatableElement;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import graphic.Animation;
+import java.util.List;
+import level.elements.ILevel;
+import textures.TextureHandler;
+import tools.Point;
+
+public class Hero extends AnimatableElement {
+    private Animation idle;
+    private Point currentPosition;
+    private ILevel currentLevel;
+
+    public Hero() {
+        List<String> texturePaths =
+                TextureHandler.getInstance().getTexturePaths("knight_m_idle_anim_f");
+        idle = new Animation(texturePaths, 5);
+    }
+
+    public void setLevel(ILevel level) {
+        currentLevel = level;
+        currentPosition = level.getStartTile().getCoordinate().toPoint();
+    }
+
+    @Override
+    public void update() {
+        // Temporären Point um den Held nur zu bewegen, wenn es keine Kollision gab
+        Point newPosition = new Point(currentPosition);
+        // Unser Held soll sich pro Schritt um 0.1 Felder bewegen.
+        float movementSpeed = 0.1f;
+        // Wenn die Taste W gedrückt ist, bewege dich nach oben
+        if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+            newPosition.y += movementSpeed;
+        }
+        // Wenn die Taste S gedrückt ist, bewege dich nach unten
+        if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+            newPosition.y -= movementSpeed;
+        }
+        // Wenn die Taste D gedrückt ist, bewege dich nach rechts
+        if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+            newPosition.x += movementSpeed;
+        }
+        // Wenn die Taste A gedrückt ist, bewege dich nach links
+        if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+            newPosition.x -= movementSpeed;
+        }
+        // Wenn der übergebene Punkt betretbar ist, ist das nun die aktuelle Position
+        if (currentLevel.getTileAt(newPosition.toCoordinate()).isAccessible()) {
+            currentPosition = newPosition;
+        }
+    }
+
+    @Override
+    public Point getPosition() {
+        return currentPosition;
+    }
+
+    @Override
+    public Animation getActiveAnimation() {
+        return idle;
+    }
+}
+```
+Damit unser Held sich nicht durch Wände bewegt, berechnen wir zuerst die neue Position, kontrollieren dann, ob diese gültig ist, und platzieren dann unseren Helden (oder auch nicht).
+Mit `Gdx.input.isKeyPressed` können wir überprüfen, ob eine Taste gedrückt ist.
+Je nachdem welche Taste gedrückt wurde, ändern wir die (nächste) Position des Helden.
+Mit `level.getTileAt(newPosition.toCoordinate()).isAccessible()` können wir überprüfen, ob es sich bei der neuen Position um ein betretbares `Tile` handelt oder nicht.
+
+Wenn Sie nun das Spiel starten, sollten Sie Ihren Helden bewegen können.
+Fügen Sie eine unterschiedliche Animation für jede Laufrichtung hinzu.
 
 ### Nächstes Level laden
 
-@amatutat
+Da unser Held immer tiefer in das Dungeon gelangen soll, lassen wir jetzt ein neues Level laden, wenn der Held auf die Leiter tritt.
+
+Dafür nutzen wir die `frame`-Methode in `MyGame`. Mit `levelAPI.getCurrentLevel().isOnEndTile(hero)` können wir überprüfen, ob unser Held auf dem EndTile steht. Ist dies der Fall, lassen wir ein neues Level laden.
+
+Da wir unseren Helden in `onLevelLoad` beim Laden eines neuen Levels automatisch neu platzieren, müssen wir uns darum nicht mehr kümmern.
+
+
+```java
+package starter;
+
+import controller.Game;
+import mygame.Hero;
+
+/**
+ * The entry class to create your own implementation.
+ *
+ * <p>This class is directly derived form {@link Game} and acts as the {@link
+ * com.badlogic.gdx.Game}.
+ */
+public class MyGame extends Game {
+    private Hero hero;
+
+    @Override
+    protected void setup() {
+        hero = new Hero();
+        entityController.add(hero);
+
+        // set the default generator
+        // levelAPI.setGenerator(new RandomWalkGenerator());
+        // load the first level
+        levelAPI.loadLevel();
+    }
+
+    @Override
+    protected void frame() {
+        if (levelAPI.getCurrentLevel().isOnEndTile(hero)) {
+            levelAPI.loadLevel();
+        }
+    }
+
+    @Override
+    public void onLevelLoad() {
+        camera.follow(hero);
+        hero.setLevel(levelAPI.getCurrentLevel());
+    }
+    /**
+     * The program entry point to start the dungeon.
+     *
+     * @param args command line arguments, but not needed.
+     */
+    public static void main(String[] args) {
+        // start the game
+        DesktopLauncher.run(new MyGame());
+    }
+}
+```
+
+_Anmerkung_: Später werden Sie viele weitere Entitäten im Level platziert haben (Monster, Schatztruhen, Fallen ...). Diese sollten Sie beim Laden eines neuen Levels löschen oder in das nächste Level "mitnehmen".
+
+Wenn Sie nun das Spiel starten, sollten Sie Ihren Helden durch die Spielwelt bewegen können und auch in das nächste Level gelangen.
 
 ## Abschlussworte
 
