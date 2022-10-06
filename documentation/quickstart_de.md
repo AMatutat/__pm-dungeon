@@ -442,6 +442,299 @@ Hier finden Sie weitere Funktionen, welche Sie im Verlauf des Praktikums gebrauc
 ### Head-up-Display (HUD)
 
 - Was das HUD alles so kann
+#### Vorbereitung
+
+Um mit dem HUD arbeiten zukönnen muss ersteinmal ein Screencontroller angelegt werden welcher dazu benutzt wird die UI Elemente darzustellen und zu verwalten. Diesen zu erstellen benötigt einen Batch welcher bereits im Game vorhanden ist und dafür genutzt werden kann. Außerdem muss der neu erstellte ScreenController in die Sammlung von Controllern hinzugefügt werden damit das Hud dargestellt wird und auch die Events abgearbeitet werden.
+```java
+package starter;
+
+import controller.Game;
+import mygame.Hero;
+
+/**
+ * The entry class to create your own implementation.
+ *
+ * <p>This class is directly derived form {@link Game} and acts as the {@link
+ * com.badlogic.gdx.Game}.
+ */
+public class MyGame extends Game {
+    private Hero hero;
+    private ScreenController screenController;
+
+    @Override
+    protected void setup() {
+        hero = new Hero();
+        entityController.add(hero);
+
+        screenController = new ScreenController(batch);
+
+        controller.add(screenController);
+        // set the default generator
+        // levelAPI.setGenerator(new RandomWalkGenerator());
+        // load the first level
+        levelAPI.loadLevel();
+    }
+
+    @Override
+    protected void frame() {
+        if (levelAPI.getCurrentLevel().isOnEndTile(hero)) {
+            levelAPI.loadLevel();
+        }
+    }
+
+    @Override
+    public void onLevelLoad() {
+        camera.follow(hero);
+        hero.setLevel(levelAPI.getCurrentLevel());
+    }
+    /**
+     * The program entry point to start the dungeon.
+     *
+     * @param args command line arguments, but not needed.
+     */
+    public static void main(String[] args) {
+        // start the game
+        DesktopLauncher.run(new MyGame());
+    }
+}
+```
+
+Der ScreenController hat eine feste DisplayGröße welche den Konstanten `Constants.WINDOW_WIDTH` sowie `Constants.WINDOW_HEIGHT` entspricht. Wenn das Fenster vergrößert oder verkleinert wird dann kümmert sich der ScreenController darum das alle Elemente entsprechend der vergrößerung ziehen.
+
+#### Basics UI Elemente 
+Im Framework sind bereits UI Elemente vorbereitet und ihre Funktionalität entspricht wie folgt.
+| UI Element | Funktion |
+| ---------- | -------- |
+| `ScreenImage` | Darstellen von einem Bild auf dem UI welches sich nicht mit dem Dungeon bewegt |
+| `ScreenText` | Darstellen von einem Text auf dem UI |
+| `ScreenButton` | Ein zu klickendes UI Element welches sowohl einen Text oder nur ein Bild als schaltfläche zur verfügung stellt |
+| `ScreenInput` | Ein eingabefeld welches ermöglicht eine Texteingabe zutätigen ohne jeden einzelnen Tastenanschlag zu handhaben |
+
+
+Die UI Elemente haben alle gemeinsame Methoden wie z.b. setPosition(X,Y), setScale(Scale) und setSize(X,Y). Welche einen das anpassen nach dem Anlegen erleichtern.
+| UI Element  | setScale                              | 
+| ----------- | ------------------------------------- |
+| ScreenImage | Bild wird in beide richtungen gezogen |
+| ScreenButton| Nur das Event wird skalliert das aussehen bleibt klein |
+| ScreenText  | Keine Erkennbare Änderung der Text wird nicht skaliert |
+| ScreenInput | Nur das Event wird skalliert das aussehen bleibt klein |
+
+#### ScreenImage
+Das simpleste Element ist das ScreenImage es nutzt die selbe art von Pfad für die Texturen wie die Entities und Animateables. Und nutzt beim erstellen ein Point objekt zur positionierung auf dem Bildschirm.
+
+```java
+package starter;
+
+import controller.Game;
+import mygame.Hero;
+
+/**
+ * The entry class to create your own implementation.
+ *
+ * <p>This class is directly derived form {@link Game} and acts as the {@link
+ * com.badlogic.gdx.Game}.
+ */
+public class MyGame extends Game {
+    private Hero hero;
+    private ScreenController screenController;
+
+    @Override
+    protected void setup() {
+        hero = new Hero();
+        entityController.add(hero);
+
+        screenController = new ScreenController(batch);
+
+        ScreenImage screenImage = new ScreenImage("hud/ui_heart_full.png", new Point(0,0));
+        screenController.add(screenImage);
+
+        controller.add(screenController);
+        // set the default generator
+        // levelAPI.setGenerator(new RandomWalkGenerator());
+        // load the first level
+        levelAPI.loadLevel();
+    }
+
+    @Override
+    protected void frame() {
+        if (levelAPI.getCurrentLevel().isOnEndTile(hero)) {
+            levelAPI.loadLevel();
+        }
+    }
+
+    @Override
+    public void onLevelLoad() {
+        camera.follow(hero);
+        hero.setLevel(levelAPI.getCurrentLevel());
+    }
+    /**
+     * The program entry point to start the dungeon.
+     *
+     * @param args command line arguments, but not needed.
+     */
+    public static void main(String[] args) {
+        // start the game
+        DesktopLauncher.run(new MyGame());
+    }
+}
+```
+
+Jetzt haben wir ein vollen Herzcontainter in der unteren Linken Ecke.
+
+TODO: ? erklärung von verhalten beim skallieren ?
+
+#### ScreenText
+Als nächstes kommt der ScreenText welcher zur darstellung von Text für den Dungeon. Beim erstellen muss ein Text angegeben werden und darauf ein Point Objekt zur Positionierung auf dem Bildschirm.
+
+```java
+package starter;
+
+import controller.Game;
+import mygame.Hero;
+
+/**
+ * The entry class to create your own implementation.
+ *
+ * <p>This class is directly derived form {@link Game} and acts as the {@link
+ * com.badlogic.gdx.Game}.
+ */
+public class MyGame extends Game {
+    private Hero hero;
+    private ScreenController screenController;
+
+    @Override
+    protected void setup() {
+        hero = new Hero();
+        entityController.add(hero);
+
+        screenController = new ScreenController(batch);
+
+        ScreenImage screenImage = new ScreenImage("hud/ui_heart_full.png", new Point(0,0));
+        screenController.add(screenImage);
+
+        ScreenText screenText = new ScreenText("Willkommen im Dungeon!", new Point(0,32),1);
+        screenController.add(screenText);
+
+        controller.add(screenController);
+        // set the default generator
+        // levelAPI.setGenerator(new RandomWalkGenerator());
+        // load the first level
+        levelAPI.loadLevel();
+    }
+
+    @Override
+    protected void frame() {
+        if (levelAPI.getCurrentLevel().isOnEndTile(hero)) {
+            levelAPI.loadLevel();
+        }
+    }
+
+    @Override
+    public void onLevelLoad() {
+        camera.follow(hero);
+        hero.setLevel(levelAPI.getCurrentLevel());
+    }
+    /**
+     * The program entry point to start the dungeon.
+     *
+     * @param args command line arguments, but not needed.
+     */
+    public static void main(String[] args) {
+        // start the game
+        DesktopLauncher.run(new MyGame());
+    }
+}
+```
+
+Jetzt haben wir zusätzlich zum herzcontainer einen kleinen Text der angezeigt wird.
+Ein paar der hilfreichen Methoden welche zur verfügung stehen sind:
+| Methode | beschreibung |
+| ------- | ------------ |
+| setFontScale(float) | erlaubt es die Schriftgröße nachträglich zu verändern |
+| setWrap(boolean) | erlaubt es dem ScreenText einen umbruch einzufügen um die eingestellte Weite nicht zu überschreiten |
+| setWidth(float) | erlaubt eine einschränkung der Breite zu machen. Nur mit setWrap(true) passiert hiermit etwas | 
+
+TODO: custom Font erklärung 
+
+#### ScreenButton
+
+Für das erstellen einer Schaltfläche gibt es den ScreenButton welcher hilfreich ist um ein Menü zu erstellen. Hierfür gibt es in der einfachen Variante die möglichkeit einen Text zu hinterlegen, die Position und zusätzlich einen Listener welcher aufgerufen wird sobald das Element angeklickt wird.
+
+```java
+package starter;
+
+import controller.Game;
+import mygame.Hero;
+
+/**
+ * The entry class to create your own implementation.
+ *
+ * <p>This class is directly derived form {@link Game} and acts as the {@link
+ * com.badlogic.gdx.Game}.
+ */
+public class MyGame extends Game {
+    private Hero hero;
+    private ScreenController screenController;
+
+    @Override
+    protected void setup() {
+        hero = new Hero();
+        entityController.add(hero);
+
+        screenController = new ScreenController(batch);
+
+        ScreenImage screenImage = new ScreenImage("hud/ui_heart_full.png", new Point(0,0));
+        screenController.add(screenImage);
+
+        ScreenText screenText = new ScreenText("Willkommen im Dungeon!", new Point(0,32),1);
+        screenController.add(screenText);
+
+        ScreenButton screenButton = new ScreenButton("Ein Button mit default Aussehen.", new Point(0, 80), new TextButtonListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                System.out.println("Button screenButton wurde gedrückt!");
+            }
+        });
+        screenController.add(screenButton);
+
+        controller.add(screenController);
+        // set the default generator
+        // levelAPI.setGenerator(new RandomWalkGenerator());
+        // load the first level
+        levelAPI.loadLevel();
+    }
+
+    @Override
+    protected void frame() {
+        if (levelAPI.getCurrentLevel().isOnEndTile(hero)) {
+            levelAPI.loadLevel();
+        }
+    }
+
+    @Override
+    public void onLevelLoad() {
+        camera.follow(hero);
+        hero.setLevel(levelAPI.getCurrentLevel());
+    }
+    /**
+     * The program entry point to start the dungeon.
+     *
+     * @param args command line arguments, but not needed.
+     */
+    public static void main(String[] args) {
+        // start the game
+        DesktopLauncher.run(new MyGame());
+    }
+}
+```
+
+TODO: custom Font erklärung, Button mit nur Bild, Button mit unterschiedlichen bild beim drücken
+
+
+#### ScreenInput
+Placeholder ! Dies ist aktuell noch nicht im Dungeon implementiert !
+TODO: komplett schreiben.
+
 
 @aheinisch
 
