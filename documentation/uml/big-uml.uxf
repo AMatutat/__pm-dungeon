@@ -9,7 +9,7 @@
 --
 + render(delta: float): void 
 # runLoop(): boolean
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>370</x><y>500</y><w>270</w><h>180</h></coordinates><panel_attributes>/AbstractController&lt;T&gt;/
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>370</x><y>500</y><w>270</w><h>180</h></coordinates><panel_attributes>/AbstractController&lt;T extends Removeable&gt;/
 --
 --
 + update(): void
