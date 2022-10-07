@@ -59,6 +59,8 @@ Die Vorgaben sind bereits lauffähig und können direkt ausgeführt werden. Daf�
 
 *Anmerkung: Sollten beim Starten Probleme auftreten, ist vielleicht ein Blick in die [FAQ](https://github.com/Programmiermethoden/PM-Dungeon/wiki/FAQ) bzw. die [Kompatibilitätsliste](https://github.com/Programmiermethoden/PM-Dungeon/wiki/JDK-Kompatibilit%C3%A4t) hilfreich. Sollten Sie Ihr Problem dennoch nicht lösen können, melden Sie sich bitte frühzeitig bei uns.*
 
+
+![First STart](figs/first-start.png)
 *Anmerkung: Wir verwenden in unserem Beispiel zufällig generierte Level, daher werden Sie vermutlich nicht das exakt gleiche Level sehen wie auf unseren Abbildungen.*
 
 ## Blick in den Code
@@ -193,7 +195,7 @@ Das folgende Beispiel ist für unseren Helden noch nicht direkt anwendbar (`lebe
 
 Wenn Sie das Spiel nun starten, sollten Sie ihren (unbeweglichen) Helden im Dungeon sehen können.
 
-![my_hero](tbd)
+![My Hero](figs/hero.png)
 
 ### Intermezzo: Der Assets-Ordner
 
@@ -270,7 +272,7 @@ Sie können (und sollten) auch verschiedene Animationen für verschiedene Situat
 
 Wenn Sie das Spiel nun starten, sollten Sie Ihren animierten (aber immer noch unbeweglichen) Helden sehen.
 
-![controll]()
+![Animated Hero](figs/animation.gif)
 
 ### WASD oder die Steuerung des Helden über die Tastatur
 
@@ -351,6 +353,8 @@ Mit `level.getTileAt(newPosition.toCoordinate()).isAccessible()` können wir üb
 Wenn Sie nun das Spiel starten, sollten Sie Ihren Helden bewegen können.
 Fügen Sie eine unterschiedliche Animation für jede Laufrichtung hinzu.
 
+![Moving Hero](figs/move.gif)
+
 ### Nächstes Level laden
 
 Da unser Held immer tiefer in das Dungeon gelangen soll, lassen wir jetzt ein neues Level laden, wenn der Held auf die Leiter tritt.
@@ -413,6 +417,8 @@ public class MyGame extends Game {
 _Anmerkung_: Später werden Sie viele weitere Entitäten im Level platziert haben (Monster, Schatztruhen, Fallen ...). Diese sollten Sie beim Laden eines neuen Levels löschen oder in das nächste Level "mitnehmen".
 
 Wenn Sie nun das Spiel starten, sollten Sie Ihren Helden durch die Spielwelt bewegen können und auch in das nächste Level gelangen.
+
+![Next Level](figs/next-level.gif)
 
 ## Abschlussworte
 
