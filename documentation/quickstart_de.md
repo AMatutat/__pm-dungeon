@@ -230,6 +230,7 @@ import graphic.Animation;
 import java.util.List;
 import textures.TextureHandler;
 import tools.Point;
+import level.elements.ILevel;
 
 public class Hero extends AnimatableElement {
     private Animation idle;
