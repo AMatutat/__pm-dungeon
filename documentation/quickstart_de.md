@@ -441,15 +441,15 @@ Hier finden Sie weitere Funktionen, welche Sie im Verlauf des Praktikums gebrauc
 
 ### Head-up-Display (HUD)
 
-- Was das HUD alles so kann
 #### Vorbereitung
 
 Um mit dem HUD arbeiten zukönnen muss ersteinmal ein Screencontroller angelegt werden welcher dazu benutzt wird die UI Elemente darzustellen und zu verwalten. Diesen zu erstellen benötigt einen Batch welcher bereits im Game vorhanden ist und dafür genutzt werden kann. Außerdem muss der neu erstellte ScreenController in die Sammlung von Controllern hinzugefügt werden damit das Hud dargestellt wird und auch die Events abgearbeitet werden.
+
 ```java
 package starter;
 
 import controller.Game;
-import mygame.Hero;
+import controller.ScreenController;
 
 /**
  * The entry class to create your own implementation.
@@ -458,14 +458,10 @@ import mygame.Hero;
  * com.badlogic.gdx.Game}.
  */
 public class MyGame extends Game {
-    private Hero hero;
     private ScreenController screenController;
 
     @Override
     protected void setup() {
-        hero = new Hero();
-        entityController.add(hero);
-
         screenController = new ScreenController(batch);
 
         controller.add(screenController);
@@ -477,15 +473,10 @@ public class MyGame extends Game {
 
     @Override
     protected void frame() {
-        if (levelAPI.getCurrentLevel().isOnEndTile(hero)) {
-            levelAPI.loadLevel();
-        }
     }
 
     @Override
     public void onLevelLoad() {
-        camera.follow(hero);
-        hero.setLevel(levelAPI.getCurrentLevel());
     }
     /**
      * The program entry point to start the dungeon.
@@ -501,7 +492,8 @@ public class MyGame extends Game {
 
 Der ScreenController hat eine feste DisplayGröße welche den Konstanten `Constants.WINDOW_WIDTH` sowie `Constants.WINDOW_HEIGHT` entspricht. Wenn das Fenster vergrößert oder verkleinert wird dann kümmert sich der ScreenController darum das alle Elemente entsprechend der vergrößerung ziehen.
 
-#### Basics UI Elemente 
+#### Basics UI Elemente
+
 Im Framework sind bereits UI Elemente vorbereitet und ihre Funktionalität entspricht wie folgt.
 | UI Element | Funktion |
 | ---------- | -------- |
@@ -512,12 +504,13 @@ Im Framework sind bereits UI Elemente vorbereitet und ihre Funktionalität entsp
 
 
 Die UI Elemente haben alle gemeinsame Methoden wie z.b. setPosition(X,Y), setScale(Scale) und setSize(X,Y). Welche einen das anpassen nach dem Anlegen erleichtern.
-| UI Element  | setScale                              | 
+| UI Element  | setScale                              |
 | ----------- | ------------------------------------- |
 | ScreenImage | Bild wird in beide richtungen gezogen |
 | ScreenButton| Nur das Event wird skalliert das aussehen bleibt klein |
 | ScreenText  | Keine Erkennbare Änderung der Text wird nicht skaliert |
 | ScreenInput | Nur das Event wird skalliert das aussehen bleibt klein |
+
 
 #### ScreenImage
 Das simpleste Element ist das ScreenImage es nutzt die selbe art von Pfad für die Texturen wie die Entities und Animateables. Und nutzt beim erstellen ein Point objekt zur positionierung auf dem Bildschirm.
@@ -526,7 +519,8 @@ Das simpleste Element ist das ScreenImage es nutzt die selbe art von Pfad für d
 package starter;
 
 import controller.Game;
-import mygame.Hero;
+import basiselements.hud.ScreenImage;
+import controller.ScreenController;
 
 /**
  * The entry class to create your own implementation.
@@ -535,13 +529,10 @@ import mygame.Hero;
  * com.badlogic.gdx.Game}.
  */
 public class MyGame extends Game {
-    private Hero hero;
     private ScreenController screenController;
 
     @Override
     protected void setup() {
-        hero = new Hero();
-        entityController.add(hero);
 
         screenController = new ScreenController(batch);
 
@@ -556,17 +547,10 @@ public class MyGame extends Game {
     }
 
     @Override
-    protected void frame() {
-        if (levelAPI.getCurrentLevel().isOnEndTile(hero)) {
-            levelAPI.loadLevel();
-        }
-    }
+    protected void frame() { }
 
     @Override
-    public void onLevelLoad() {
-        camera.follow(hero);
-        hero.setLevel(levelAPI.getCurrentLevel());
-    }
+    public void onLevelLoad() { }
     /**
      * The program entry point to start the dungeon.
      *
@@ -579,18 +563,25 @@ public class MyGame extends Game {
 }
 ```
 
-Jetzt haben wir ein vollen Herzcontainter in der unteren Linken Ecke.
+Jetzt haben wir ein vollen Herzcontainter in der unteren Linken Ecke. TODO: Bildeinfügen
 
-TODO: ? erklärung von verhalten beim skallieren ?
+Um die größe eines bildes zu bestimmen gibt es mehrere Methoden einmal setSize(xSize,ySize) womit die Größe in Pixeln festgelegt werden kann. Dann gibt es noch die möglichkeit mit setScale(xyScale) gleichmäßig das Bild zu vergrößern.
+
+Das Verhalten ist wie folgt erst wird die absolute Größe (setSize) festgelegt im Default ist dies die Größe der Texture. Dannach wird mit der Skallierung das Bild zusätzlich vergrößert bzw. verkleinert. Gehen wir also von einer Texture in der Größe 16x16 Pixeln aus und ändern die Größe im Program auf 20x20 wird die Texture so gezogen das sie die gesammte Fläche abdeckt. Darauf hin könnte die Skallierung auf 3 festgelegt werden somit wird die Texture auf eine Große von 60x60 gezogen.
+
+TODO: noch einen ordentlichen Screenshot mit Beschreibungen
+
 
 #### ScreenText
+
 Als nächstes kommt der ScreenText welcher zur darstellung von Text für den Dungeon. Beim erstellen muss ein Text angegeben werden und darauf ein Point Objekt zur Positionierung auf dem Bildschirm.
 
 ```java
 package starter;
 
 import controller.Game;
-import mygame.Hero;
+import basiselements.hud.ScreenText;
+import controller.ScreenController;
 
 /**
  * The entry class to create your own implementation.
@@ -599,18 +590,11 @@ import mygame.Hero;
  * com.badlogic.gdx.Game}.
  */
 public class MyGame extends Game {
-    private Hero hero;
     private ScreenController screenController;
 
     @Override
     protected void setup() {
-        hero = new Hero();
-        entityController.add(hero);
-
         screenController = new ScreenController(batch);
-
-        ScreenImage screenImage = new ScreenImage("hud/ui_heart_full.png", new Point(0,0));
-        screenController.add(screenImage);
 
         ScreenText screenText = new ScreenText("Willkommen im Dungeon!", new Point(0,32),1);
         screenController.add(screenText);
@@ -623,17 +607,10 @@ public class MyGame extends Game {
     }
 
     @Override
-    protected void frame() {
-        if (levelAPI.getCurrentLevel().isOnEndTile(hero)) {
-            levelAPI.loadLevel();
-        }
-    }
+    protected void frame() {}
 
     @Override
-    public void onLevelLoad() {
-        camera.follow(hero);
-        hero.setLevel(levelAPI.getCurrentLevel());
-    }
+    public void onLevelLoad() {}
     /**
      * The program entry point to start the dungeon.
      *
@@ -646,15 +623,14 @@ public class MyGame extends Game {
 }
 ```
 
-Jetzt haben wir zusätzlich zum herzcontainer einen kleinen Text der angezeigt wird.
-Ein paar der hilfreichen Methoden welche zur verfügung stehen sind:
+Jetzt existiert ein Text mit den Default einstellungen in der unteren linken Ecke.
+
+
 | Methode | beschreibung |
 | ------- | ------------ |
 | setFontScale(float) | erlaubt es die Schriftgröße nachträglich zu verändern |
 | setWrap(boolean) | erlaubt es dem ScreenText einen umbruch einzufügen um die eingestellte Weite nicht zu überschreiten |
-| setWidth(float) | erlaubt eine einschränkung der Breite zu machen. Nur mit setWrap(true) passiert hiermit etwas | 
-
-TODO: custom Font erklärung 
+| setWidth(float) | erlaubt eine einschränkung der Breite zu machen. Nur mit setWrap(true) passiert hiermit etwas |
 
 #### ScreenButton
 
@@ -664,7 +640,8 @@ Für das erstellen einer Schaltfläche gibt es den ScreenButton welcher hilfreic
 package starter;
 
 import controller.Game;
-import mygame.Hero;
+import basiselements.hud.ScreenButton;
+import controller.ScreenController;
 
 /**
  * The entry class to create your own implementation.
@@ -673,22 +650,11 @@ import mygame.Hero;
  * com.badlogic.gdx.Game}.
  */
 public class MyGame extends Game {
-    private Hero hero;
     private ScreenController screenController;
 
     @Override
     protected void setup() {
-        hero = new Hero();
-        entityController.add(hero);
-
         screenController = new ScreenController(batch);
-
-        ScreenImage screenImage = new ScreenImage("hud/ui_heart_full.png", new Point(0,0));
-        screenController.add(screenImage);
-
-        ScreenText screenText = new ScreenText("Willkommen im Dungeon!", new Point(0,32),1);
-        screenController.add(screenText);
-
         ScreenButton screenButton = new ScreenButton("Ein Button mit default Aussehen.", new Point(0, 80), new TextButtonListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
@@ -705,17 +671,10 @@ public class MyGame extends Game {
     }
 
     @Override
-    protected void frame() {
-        if (levelAPI.getCurrentLevel().isOnEndTile(hero)) {
-            levelAPI.loadLevel();
-        }
-    }
+    protected void frame() { }
 
     @Override
-    public void onLevelLoad() {
-        camera.follow(hero);
-        hero.setLevel(levelAPI.getCurrentLevel());
-    }
+    public void onLevelLoad() { }
     /**
      * The program entry point to start the dungeon.
      *
@@ -728,12 +687,66 @@ public class MyGame extends Game {
 }
 ```
 
-TODO: custom Font erklärung, Button mit nur Bild, Button mit unterschiedlichen bild beim drücken
-
-
 #### ScreenInput
-Placeholder ! Dies ist aktuell noch nicht im Dungeon implementiert !
-TODO: komplett schreiben.
+
+
+```java
+package starter;
+
+import controller.Game;
+import basiselements.hud.ScreenInput;
+import controller.ScreenController;
+
+/**
+ * The entry class to create your own implementation.
+ *
+ * <p>This class is directly derived form {@link Game} and acts as the {@link
+ * com.badlogic.gdx.Game}.
+ */
+public class MyGame extends Game {
+    private ScreenController screenController;
+
+    @Override
+    protected void setup() {
+        screenController = new ScreenController(batch);
+
+        ScreenInput screenInput = new ScreenInput("vorausgefüllte Text", new Point(0,120));
+        screenController.add(screenInput);
+
+        controller.add(screenController);
+        // set the default generator
+        // levelAPI.setGenerator(new RandomWalkGenerator());
+        // load the first level
+        levelAPI.loadLevel();
+    }
+
+    @Override
+    protected void frame() { }
+
+    @Override
+    public void onLevelLoad() { }
+    /**
+     * The program entry point to start the dungeon.
+     *
+     * @param args command line arguments, but not needed.
+     */
+    public static void main(String[] args) {
+        // start the game
+        DesktopLauncher.run(new MyGame());
+    }
+}
+```
+#### Fonts
+
+Der Defaultfont ist als Konstante im `basiselements.hud.FontBuilder` hinterlegt. Falls ein eigener Font eingelesen werden soll ist hierfür der FontBuilder geeignet welcher
+TODO: Es gibt einen Defaultfont und einen custom Font vorsicht beim hochladen von Fonts aus dem Internet wegen copyright bla bli blub...
+
+#### Stylebuilder
+
+Für einige UIElemente gibt es Stylebuilder. Diese sind dafür geeignete eigene Styles bzw. Fonts anzuwenden.
+- ScreenText nutzt LabelStyleBuilder
+- ScreenButton nutzt ButtonStyleBuilder
+- ScreenInput nutzt TextfieldStyleBuilder
 
 
 @aheinisch
