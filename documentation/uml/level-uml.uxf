@@ -1,22 +1,22 @@
-<diagram program="umletino" version="15.0.0"><zoom_level>9</zoom_level><element><id>UMLClass</id><coordinates><x>927</x><y>267</y><w>189</w><h>27</h></coordinates><panel_attributes>Game
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>936</x><y>330</y><w>189</w><h>27</h></coordinates><panel_attributes>LevelAPI
+<diagram program="umletino" version="15.0.0"><zoom_level>10</zoom_level><element><id>UMLClass</id><coordinates><x>1120</x><y>340</y><w>210</w><h>30</h></coordinates><panel_attributes>Game
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1130</x><y>410</y><w>210</w><h>30</h></coordinates><panel_attributes>LevelAPI
 
-bg=red
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1017</x><y>285</y><w>27</w><h>63</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>UMLClass</id><coordinates><x>711</x><y>132</y><w>189</w><h>63</h></coordinates><panel_attributes>&lt;&lt;Interface&gt;&gt;
+bg=#522BA2
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1220</x><y>360</y><w>30</w><h>70</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;50</additional_attributes></element><element><id>UMLClass</id><coordinates><x>790</x><y>200</y><w>210</w><h>70</h></coordinates><panel_attributes>&lt;&lt;Interface&gt;&gt;
 IOnLevelLoader
 --
 --
-+ onLevelLoad(): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>792</x><y>186</y><w>243</w><h>99</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;70;250;70;250;90</additional_attributes></element><element><id>Relation</id><coordinates><x>729</x><y>186</y><w>225</w><h>171</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;10;170;230;170</additional_attributes></element><element><id>UMLClass</id><coordinates><x>927</x><y>429</y><w>360</w><h>126</h></coordinates><panel_attributes>&lt;&lt;Interface&gt;&gt;
++ onLevelLoad(): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>880</x><y>260</y><w>360</w><h>100</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;60;340;60;340;80</additional_attributes></element><element><id>Relation</id><coordinates><x>810</x><y>260</y><w>340</w><h>180</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;10;10;160;320;160</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1030</x><y>520</y><w>400</w><h>140</h></coordinates><panel_attributes>&lt;&lt;Interface&gt;&gt;
 ILevel
 --
 --
-+ setStartTile(start: Tile ): void 
-+ setEndTile(end: Tile ): void 
++ setStartTile(start: Tile ): void
++ setEndTile(end: Tile ): void
 + setRandomStart(): void
 + setRandomEnd(): void
 + changeTileElementType(tile: Tile, changeInto: LevelElement): void
-+ printLevel(): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1017</x><y>348</y><w>27</w><h>99</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>585</x><y>429</y><w>306</w><h>180</h></coordinates><panel_attributes>&lt;&lt;Interface&gt;&gt;
-ITileable 
++ printLevel(): String</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1220</x><y>430</y><w>30</w><h>110</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>650</x><y>520</y><w>340</w><h>190</h></coordinates><panel_attributes>&lt;&lt;Interface&gt;&gt;
+ITileable
 --
 --
 + getLayout(): Tile[][]
@@ -27,23 +27,23 @@ ITileable
 + getRandomTile(elementType: LevelElement): Tile
 + getRandomTilePoint(): Point
 + getRandomTilePoint(elementTyp: LevelElement): Point
-+ isOnEndTile(entity: DungeonElement): boolean</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>438</y><w>198</w><h>36</h></coordinates><panel_attributes>IndexedGraph&lt;Tile&gt;
++ isOnEndTile(entity: DungeonElement): boolean</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>0</x><y>530</y><w>220</w><h>40</h></coordinates><panel_attributes>IndexedGraph&lt;Tile&gt;
 
-bg=orange</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>270</x><y>429</y><w>261</w><h>63</h></coordinates><panel_attributes>&lt;&lt;Interface&gt;&gt;
+bg=orange</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>300</x><y>520</y><w>290</w><h>70</h></coordinates><panel_attributes>&lt;&lt;Interface&gt;&gt;
 IPathable
 --
 --
 + findPath(start: Tile, end: Tile):  GrapPath&lt;Tile&gt;
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>441</x><y>645</y><w>360</w><h>108</h></coordinates><panel_attributes>Tile
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>490</x><y>760</y><w>400</w><h>120</h></coordinates><panel_attributes>Tile
 --
 --
 + isAccessible(): boolean
-+ setLevelElement(elementType: LevelElement, texture: String): void 
-+ getCoordinate(): Coordinate 
-+ getLevelElement(): LevelElement 
-+ getDesignLabel(): DesignLabel </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>927</x><y>699</y><w>189</w><h>27</h></coordinates><panel_attributes>TileLevel
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>792</x><y>708</y><w>153</w><h>27</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;150;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1017</x><y>546</y><w>27</w><h>171</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;170</additional_attributes></element><element><id>Relation</id><coordinates><x>189</x><y>447</y><w>99</w><h>27</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>522</x><y>447</y><w>81</w><h>27</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;70;10</additional_attributes></element><element><id>Relation</id><coordinates><x>882</x><y>447</y><w>63</w><h>27</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;50;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1431</x><y>393</y><w>315</w><h>99</h></coordinates><panel_attributes>&lt;&lt;Interface&gt;&gt;
++ setLevelElement(elementType: LevelElement, texture: String): void
++ getCoordinate(): Coordinate
++ getLevelElement(): LevelElement
++ getDesignLabel(): DesignLabel </panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1030</x><y>820</y><w>210</w><h>30</h></coordinates><panel_attributes>TileLevel
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>880</x><y>830</y><w>170</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;150;10</additional_attributes></element><element><id>Relation</id><coordinates><x>1130</x><y>650</y><w>30</w><h>190</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;170</additional_attributes></element><element><id>Relation</id><coordinates><x>210</x><y>540</y><w>110</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;90;10</additional_attributes></element><element><id>Relation</id><coordinates><x>580</x><y>540</y><w>90</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;70;10</additional_attributes></element><element><id>Relation</id><coordinates><x>980</x><y>540</y><w>70</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;50;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1590</x><y>480</y><w>350</w><h>110</h></coordinates><panel_attributes>&lt;&lt;Interface&gt;&gt;
 IGenerator
 --
 --
@@ -52,6 +52,6 @@ IGenerator
 + getLevel(designLabel: DesignLabel): ILevel
 + getLevel(size: LevelSize): ILevel
 
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1116</x><y>330</y><w>495</w><h>81</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;530;10;530;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1350</x><y>591</y><w>189</w><h>36</h></coordinates><panel_attributes>PerlinNoiseGenerator
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1620</x><y>591</y><w>189</w><h>36</h></coordinates><panel_attributes>RandomWalkGenerator
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1431</x><y>483</y><w>180</w><h>126</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>180;10;180;60;10;60;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>1584</x><y>483</y><w>153</w><h>126</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;60;150;60;150;120</additional_attributes></element><element><id>Relation</id><coordinates><x>90</x><y>465</y><w>369</w><h>270</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>390;280;10;280;10;10</additional_attributes></element></diagram>
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1330</x><y>410</y><w>460</w><h>90</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;440;10;440;70</additional_attributes></element><element><id>UMLClass</id><coordinates><x>1500</x><y>700</y><w>210</w><h>40</h></coordinates><panel_attributes>PerlinNoiseGenerator
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>1800</x><y>700</y><w>210</w><h>40</h></coordinates><panel_attributes>RandomWalkGenerator
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>1590</x><y>580</y><w>200</w><h>140</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>180;10;180;60;10;60;10;120</additional_attributes></element><element><id>Relation</id><coordinates><x>1760</x><y>580</y><w>170</w><h>140</h></coordinates><panel_attributes>lt=&lt;&lt;.</panel_attributes><additional_attributes>10;10;10;60;150;60;150;120</additional_attributes></element><element><id>Relation</id><coordinates><x>100</x><y>560</y><w>410</w><h>300</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>390;280;10;280;10;10</additional_attributes></element></diagram>

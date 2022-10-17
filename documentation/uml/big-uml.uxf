@@ -1,4 +1,4 @@
-<diagram program="umletino" version="15.0.0"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>340</x><y>210</y><w>260</w><h>170</h></coordinates><panel_attributes>/Game/
+<diagram program="umletino" version="15.0.0"><zoom_level>10</zoom_level><help_text>Space for diagram notes</help_text><element><id>UMLClass</id><coordinates><x>360</x><y>240</y><w>260</w><h>210</h></coordinates><panel_attributes>/Game/
 --
 # controller:List&lt;AbstractController&lt;?&gt; &gt;
 # entityController: EntityController
@@ -7,9 +7,11 @@
 # levelAPI: LevelAPI
 # generator: IGenerator
 --
-+ render(delta: float): void 
++ render(delta: float): void
 # runLoop(): boolean
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>370</x><y>500</y><w>270</w><h>180</h></coordinates><panel_attributes>/AbstractController&lt;T extends Removeable&gt;/
+/# setup(): void/
+/# frame(): void/
+/+ onLevelLoad(): void/</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>390</x><y>570</y><w>270</w><h>180</h></coordinates><panel_attributes>/AbstractController&lt;T extends Removeable&gt;/
 --
 --
 + update(): void
@@ -22,23 +24,23 @@
 + iterator(): Iterator&lt;T&gt;
 + forEach(action: Consumer&lt;? super T&gt;): void
 
-bg=yellow
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>910</x><y>500</y><w>250</w><h>100</h></coordinates><panel_attributes>DungeonCamera
+bg=#6EC1C9
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>930</x><y>570</y><w>250</w><h>100</h></coordinates><panel_attributes>DungeonCamera
 --
 --
 + update(): void
 + follow(follows: DungeonElement): void
 + getFollowedObject(): DungeonElement
-+ setFocusPoint(focusPoint: Point): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>800</x><y>220</y><w>210</w><h>110</h></coordinates><panel_attributes>MyGame
++ setFocusPoint(focusPoint: Point): void</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>820</x><y>280</y><w>210</w><h>110</h></coordinates><panel_attributes>MyGame
 --
 --
++ main(): void
 # setup(): void
 # frame(): void
 + onLevelLoad(): void
-+ main(): void
-bg=green</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>670</x><y>500</y><w>210</w><h>40</h></coordinates><panel_attributes>Painter
+bg=#759632</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>690</x><y>570</y><w>210</w><h>40</h></coordinates><panel_attributes>Painter
 
-bg=orange</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>40</x><y>500</y><w>280</w><h>140</h></coordinates><panel_attributes>LevelAPI
+bg=orange</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>60</x><y>570</y><w>280</w><h>140</h></coordinates><panel_attributes>LevelAPI
 --
 --
 + update(): void
@@ -48,7 +50,7 @@ bg=orange</panel_attributes><additional_attributes></additional_attributes></ele
 + getCurrentLevel(): ILevel
 + getGenerator(): IGenerator
 
-bg=red
-</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>370</x><y>50</y><w>210</w><h>30</h></coordinates><panel_attributes>DesktopLauncher
-bg=orange</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>370</x><y>110</y><w>210</w><h>30</h></coordinates><panel_attributes>LibgdxSetup
-bg=orange</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>370</y><w>30</w><h>150</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>130</y><w>30</w><h>100</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;80;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>460</x><y>70</y><w>30</w><h>60</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;40;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>590</x><y>270</y><w>230</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;210;10</additional_attributes></element><element><id>Relation</id><coordinates><x>170</x><y>370</y><w>260</w><h>150</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>240;10;240;80;10;80;10;130</additional_attributes></element><element><id>Relation</id><coordinates><x>520</x><y>370</y><w>280</w><h>150</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;80;260;80;260;130</additional_attributes></element><element><id>Relation</id><coordinates><x>590</x><y>350</y><w>450</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;430;10;430;150</additional_attributes></element></diagram>
+bg=#522BA2
+</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>390</x><y>120</y><w>210</w><h>30</h></coordinates><panel_attributes>DesktopLauncher
+bg=orange</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>390</x><y>180</y><w>210</w><h>30</h></coordinates><panel_attributes>LibgdxSetup
+bg=orange</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>490</x><y>440</y><w>30</w><h>150</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;130</additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>200</y><w>30</w><h>60</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;40;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>340</y><w>230</w><h>30</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;210;10</additional_attributes></element><element><id>Relation</id><coordinates><x>190</x><y>440</y><w>260</w><h>150</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>240;10;240;80;10;80;10;130</additional_attributes></element><element><id>Relation</id><coordinates><x>540</x><y>440</y><w>280</w><h>150</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;80;260;80;260;130</additional_attributes></element><element><id>Relation</id><coordinates><x>610</x><y>420</y><w>450</w><h>170</h></coordinates><panel_attributes>lt=&lt;&lt;&lt;&lt;-</panel_attributes><additional_attributes>10;10;430;10;430;150</additional_attributes></element><element><id>Relation</id><coordinates><x>480</x><y>140</y><w>30</w><h>60</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;40;10;10</additional_attributes></element></diagram>

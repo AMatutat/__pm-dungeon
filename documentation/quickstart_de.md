@@ -50,6 +50,9 @@ Bevor wir mit der eigentlichen Implementierung des Spiels anfangen, eine kurze E
 
 *Hinweis: Die Game-Loop wird automatisch ausgeführt, Sie müssen sie nicht aktiv aufrufen.*
 
+![Big UML](uml/big_uml.png)
+*Anmerkung: Dieses UML ist vereinfacht und an entsprechenden stellen abstrahiert, um Ihnen einen möglichst guten Überblick über das Framework zu verschaffen.*
+
 ## Erster Start
 
 Die Vorgaben sind bereits lauffähig und können direkt ausgeführt werden. Dafür können Sie die Vorgaben entweder als Projekt in Ihrer IDE laden (siehe auch [PM-Dungeon-Wiki: "Import Project"](https://github.com/Programmiermethoden/PM-Dungeon/wiki/Import-Project)) und die Anwendung über die Run-Funktion Ihrer IDE starten oder Sie starten die Anwendung über die Kommandozeile per `./gradlew run`. Öffnen Sie dafür die Konsole, gehen Sie in das `PM-Dungeon/code/`-Verzeichnis und geben Sie folgenden Befehl ein:
@@ -74,11 +77,15 @@ Betrachten wir nun den `code/core/src/starter/MyGame.java`. Diese Klasse ist Ihr
 - `setup` wird zu Beginn der Anwendung aufgerufen. In dieser Methode werden später die Objekte initialisiert und konfiguriert, welche bereits vor dem Spielstart existieren müssen. In der Vorgabe wird hier bereits das erste Level geladen.
 - `update` Aktualisiert alle Elemente, die beim Controller registriert sind, entfernt löschbare Elemente und ruft die Update- und Draw-Methode für jedes registrierte Element auf.
 - `onLevelLoad` wird immer dann aufgerufen, wenn ein Level geladen wird. Hier werden später Monster und Items erstellt, die initial im Level verteilt werden.
+- `frame` wird jedem Frame einmal aufgerufen.
 - `main` startet das Spiel.
 
 ## Eigener Held
 
 Jetzt, wo Sie sichergestellt haben, dass das Dungeon ausgeführt werden kann, geht es darum, das Spiel mit Ihren Inhalten zu erweitern. Im Folgenden wird schrittweise ein rudimentärer Held implementiert, um Ihnen die verschiedenen Aspekte des Dungeon zu erläutern.
+
+![Element UML](uml/element_uml.png)
+*Anmerkung: Dieses UML ist vereinfacht und an entsprechenden stellen abstrahiert, um Ihnen einen möglichst guten Überblick über das Framework zu verschaffen.*
 
 Fangen wir damit an, eine neue Klasse für den Helden anzulegen. Unser Held soll grafisch dargestellt werden und vom `EntityController` verwaltet werden können. Daher erbt er von der abtrakten Klasse `basiselements.DungeonElement`.
 
@@ -87,7 +94,7 @@ Diese abstrakte Klasse `basiselements.DungeonElement` liefert einige Methoden, w
 - `getPosition` gibt an, wo unser Held im Dungeon steht. Weiter unten folgt eine genauere Erklärung des verwendeten Koordinaten- und Positionssystem.
 - `getTexturePath` gibt an, welche Textur verwendet werden soll, wenn unser Held gezeichnet wird.
 
-Für beide Methoden legen wir uns Attribute an, die immer den aktuellen Wert speichern und diesen in den getter-Methoden zurückliefern. 
+Für beide Methoden legen wir uns Attribute an, die immer den aktuellen Wert speichern und diesen in den getter-Methoden zurückliefern.
 
 Zuerst benötigt unser Held eine Textur, die gezeichnet werden soll, um den Helden darzustellen. Im Framework arbeiten wir immer mit den relativen Pfaden (ausgehend vom `asset/` Verzeichnis), um die Texturen zu laden.
 Daher speichern wir einen String mit dem Pfad zu der Textur ab und geben diesen in `getTexturePath()` zurück.
@@ -130,9 +137,9 @@ public class Hero extends DungeonElement {
 
 Bevor wir weiter machen, sollten wir uns einmal den Aufbau des Level anschauen. Level werden als 2D-Tile-Array gespeichert. Ein `Tile` ist dabei ein Feld im Level, also eine Wand oder ein Bodenfeld. Jedes `Tile` hat eine feste `Coordinate` im Array (also einen Index, wo im Array das `Tile` abgespeichert ist). Diese `Coordinate` gibt auch an, wo das `Tile` im Level liegt. `Coordinate` sind zwei Integerwerte (`x` und `y`). Die Position von Entitäten geben wir als `Point` an. Ein `Point` sind zwei Floatwerte (`x` und `y`). Das machen wir, weil unsere Entitäten auch zwischen zwei `Tiles` stehen können. Wenn wir später die Steuerung für unseren Helden implementieren, wird dieses noch deutlicher. Jetzt ist wichtig, dass wir mit `Coordinate.toPoint()` unseren Helden auf die Position des Starttiles setzen können.
 
-Jetzt müssen wir unseren Helden noch im Spiel hinzufügen. Dafür erstellen wir zuerst eine Instanz unserer Klasse in der `MyGame#setup` Methode. 
-Danach fügen wir unseren Helden dem `EntityController` hinzu, dieser sorgt jetzt dafür, dass unser Held regelmäßig aktualisert und gezeichnet wird. 
-Um unseren Helden eine Position im Level zuzuweisen, gehen wir in die `MyGame#onLevelLoad` Methode und rufen dort die `Hero#setLevel` Methode auf und übergeben das aktuelle Level. 
+Jetzt müssen wir unseren Helden noch im Spiel hinzufügen. Dafür erstellen wir zuerst eine Instanz unserer Klasse in der `MyGame#setup` Methode.
+Danach fügen wir unseren Helden dem `EntityController` hinzu, dieser sorgt jetzt dafür, dass unser Held regelmäßig aktualisert und gezeichnet wird.
+Um unseren Helden eine Position im Level zuzuweisen, gehen wir in die `MyGame#onLevelLoad` Methode und rufen dort die `Hero#setLevel` Methode auf und übergeben das aktuelle Level.
 Wenn wir schon dabei sind, können wir unsere Kamera auch so verändern, dass sie immer den Helden im Fokus hält. Das wird später noch nützlich.
 
 ```java
@@ -266,7 +273,7 @@ public class Hero extends AnimatableElement {
 
 Um eine Animation zu erstellen benötigen Sie eine Liste mit verschiedenen Texturen. Dann können Sie mit `new Animation()` eine Animation erstellen. Dabei übergeben Sie die Liste mit den Texturen und einen Integerwert, der angibt, nach wie vielen Frames die nächste Textur geladen werden soll (hier im Beispiel der Wert 5). In unserem Beispiel wird also 5 Frames lang die Textur `knight_m_idle_anim_f0` angezeigt, dann 5 Frames die Textur `knight_m_idle_anim_f1` und dann wieder 5 Frames die Textur `knight_m_idle_anim_f0` usw.
 
-Um uns das einlesen der verschiedenen Texturen einfacher zu machen, haben wir hier den `TextureHandler` verwendet. Dieser läd uns alle Datein ein, die `"knight_m_idle_anim_f"` im Namen haben, so müssen wir nicht alle Texturen manuell festlegen.  
+Um uns das einlesen der verschiedenen Texturen einfacher zu machen, haben wir hier den `TextureHandler` verwendet. Dieser läd uns alle Datein ein, die `"knight_m_idle_anim_f"` im Namen haben, so müssen wir nicht alle Texturen manuell festlegen.
 
 Sie können (und sollten) auch verschiedene Animationen für verschiedene Situationen ertellen (Stehen, Laufen, ...). Geben Sie einfach in `getActiveAnimation` immer die Animation zurück, die gerade verwendet werden soll.
 
@@ -360,6 +367,9 @@ Fügen Sie eine unterschiedliche Animation für jede Laufrichtung hinzu.
 Da unser Held immer tiefer in das Dungeon gelangen soll, lassen wir jetzt ein neues Level laden, wenn der Held auf die Leiter tritt.
 
 Dafür nutzen wir die `frame`-Methode in `MyGame`. Mit `levelAPI.getCurrentLevel().isOnEndTile(hero)` können wir überprüfen, ob unser Held auf dem EndTile steht. Ist dies der Fall, lassen wir ein neues Level laden.
+
+![Level UML](uml/level_uml.png)
+*Anmerkung: Dieses UML ist vereinfacht und an entsprechenden stellen abstrahiert, um Ihnen einen möglichst guten Überblick über das Framework zu verschaffen.*
 
 Da wir unseren Helden in `onLevelLoad` beim Laden eines neuen Levels automatisch neu platzieren, müssen wir uns darum nicht mehr kümmern.
 
