@@ -1,3 +1,9 @@
+**This project has been merged into the [Programming Methods/Dungeon](https://github.com/Programmiermethoden/Dungeon/commit/bf771994333c45a6bb2e462117220232f07b5acf) project as of 10 January 2023 and is no longer being maintained. Please use [Programmiermethoden/Dungeon](https://github.com/Programmiermethoden/Dungeon/) instead.**
+
+
+---
+
+
 [![Java CI](https://github.com/Programmiermethoden/PM-Dungeon/actions/workflows/github_ci.yml/badge.svg)](https://github.com/Programmiermethoden/PM-Dungeon/actions/workflows/github_ci.yml)
 
 # PM-Dungeon-Framework
@@ -39,7 +45,7 @@ feel free to contact us in English or German.
 
 ## Credits
 
-This project was funded by the Ministry of Culture and Science (MKW) in North 
+This project was funded by the Ministry of Culture and Science (MKW) in North
 Rhine-Westphalia in agreement with the Digitale Hochschule NRW (DH.NRW)
 (["Fellowships für Innovationen in der digitalen Hochschulbildung (Digi Fellowships)"](https://www.dh.nrw/kooperationen/Digi-Fellows-2)).
 
